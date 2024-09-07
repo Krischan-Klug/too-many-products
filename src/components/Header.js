@@ -5,8 +5,8 @@ import Link from "next/link";
 //Styled components
 const StyledHeader = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 1rem;
   background-color: #f5f5f5;
   border-bottom: 1px solid #ccc;
@@ -32,12 +32,16 @@ export default function Header() {
     <>
       <StyledHeader>
         <h3>TMP</h3>
-        <button onClick={() => toggleMenu(setProductMenuOpen, productMenuOpen)}>
-          <h3>Products</h3>
-        </button>
-        <button onClick={() => toggleMenu(setAdminMenuOpen, adminMenuOpen)}>
-          <h3>Admin</h3>
-        </button>
+        <div>
+          <button
+            onClick={() => toggleMenu(setProductMenuOpen, productMenuOpen)}
+          >
+            <h3>Products</h3>
+          </button>
+          <button onClick={() => toggleMenu(setAdminMenuOpen, adminMenuOpen)}>
+            <h3>Admin</h3>
+          </button>
+        </div>
       </StyledHeader>
       {productMenuOpen && (
         <StyledMenu>
