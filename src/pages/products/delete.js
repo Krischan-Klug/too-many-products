@@ -9,7 +9,6 @@ export default function Delete() {
     const formData = new FormData(e.target);
     const productObject = Object.fromEntries(formData.entries());
 
-    console.log(productObject);
     productToDelete = productObject;
 
     deleteProduct();
