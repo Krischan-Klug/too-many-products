@@ -11,6 +11,7 @@ const StyledForm = styled.form`
 `;
 
 export default function Create() {
+  let finalProduct = {};
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -19,7 +20,27 @@ export default function Create() {
     const productObject = Object.fromEntries(formData.entries());
 
     console.log(productObject);
+    finalProduct = productObject;
+    createProduct();
   };
+
+  async function createProduct() {
+    let productData = finalProduct;
+    const response = await fetch("/api/product/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productData),
+    });
+
+    console.log("Create successful");
+
+    if (!response.ok) {
+      console.error(response.status);
+    }
+  }
+
   return (
     <>
       <StyledForm onSubmit={handleSubmit}>
