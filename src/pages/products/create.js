@@ -1,14 +1,4 @@
-import styled from "styled-components";
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  max-width: 400px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-`;
+import { StyledProductForm } from "@/components/StyledComponents/StyledForms";
 
 export default function Create() {
   let finalProduct = {};
@@ -19,22 +9,18 @@ export default function Create() {
     const formData = new FormData(e.target);
     const productObject = Object.fromEntries(formData.entries());
 
-    console.log(productObject);
     finalProduct = productObject;
     createProduct();
   };
 
   async function createProduct() {
-    let productData = finalProduct;
     const response = await fetch("/api/product/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(productData),
+      body: JSON.stringify(finalProduct),
     });
-
-    console.log("Create successful");
 
     if (!response.ok) {
       console.error(response.status);
@@ -43,7 +29,7 @@ export default function Create() {
 
   return (
     <>
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledProductForm onSubmit={handleSubmit}>
         <h1>Create Product</h1>
         <label htmlFor="name">Name</label>
         <input type="text" name="name" id="name" />
@@ -56,7 +42,7 @@ export default function Create() {
         <br />
 
         <button type="submit">Create</button>
-      </StyledForm>
+      </StyledProductForm>
     </>
   );
 }

@@ -15,4 +15,13 @@ export default async function handler(req, res) {
       res.status(400).json({ error: error.message });
     }
   }
+
+  if (req.method === "DELETE") {
+    try {
+      await Product.findOneAndDelete({ _id: req.body._id });
+      return res.status(200).json({ status: "Product deleted!" });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
 }
