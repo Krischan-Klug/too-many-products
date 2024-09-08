@@ -11,10 +11,11 @@ export default function Create() {
 
     finalProduct = productObject;
     createProduct();
+    e.target.reset();
   };
 
   async function createProduct() {
-    const response = await fetch("/api/product/", {
+    const response = await fetch("/api/products/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -13,10 +13,11 @@ export default function Delete() {
     productToDelete = productObject;
 
     deleteProduct();
+    e.target.reset();
   };
 
   async function deleteProduct() {
-    const response = await fetch("/api/product/", {
+    const response = await fetch("/api/products/", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
