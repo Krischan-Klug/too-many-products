@@ -4,6 +4,7 @@ export const StyledProductForm = styled.form`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+  margin-top: 20px;
   max-width: 400px;
   padding: 20px;
   border: 1px solid #ccc;

@@ -31,7 +31,6 @@ export default function Delete() {
 
   return (
     <>
-      <h1>DELETE</h1>
       <StyledProductForm onSubmit={handleSubmit}>
         <h1>Delete Product</h1>
         <label htmlFor="_id">ID</label>
