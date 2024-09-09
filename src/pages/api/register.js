@@ -3,47 +3,39 @@ import bcrypt from "bcryptjs";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    // Prüfen, ob E-Mail und Passwort vorhanden sind
-    if (!email || !password) {
+    if (!username || !password) {
       return res
         .status(400)
-        .json({ message: "Email and password are required" });
+        .json({ message: "Benutzername und Passwort sind erforderlich" });
     }
 
     try {
-      // Verbindung zur MongoDB
       const client = await MongoClient.connect(process.env.MONGODB_URI);
       const db = client.db();
 
-      // Prüfen, ob der Benutzer bereits existiert
-      const existingUser = await db.collection("users").findOne({ email });
+      const existingUser = await db.collection("users").findOne({ username });
 
       if (existingUser) {
         client.close();
-        return res.status(400).json({ message: "User already exists" });
+        return res.status(400).json({ message: "Benutzer existiert bereits" });
       }
 
-      // Passwort hashen
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Benutzer in der Datenbank speichern
       await db.collection("users").insertOne({
-        email,
+        username,
         password: hashedPassword,
       });
 
-      // Verbindung schließen
       client.close();
 
-      // Erfolgsmeldung
-      return res.status(201).json({ message: "User created successfully" });
+      return res.status(201).json({ message: "Benutzer erfolgreich erstellt" });
     } catch (error) {
-      return res.status(500).json({ message: "Something went wrong" });
+      return res.status(500).json({ message: "Es ist ein Fehler aufgetreten" });
     }
   } else {
-    // Falls keine POST-Anfrage, Rückmeldung
-    return res.status(405).json({ message: "Method not allowed" });
+    return res.status(405).json({ message: "Methode nicht erlaubt" });
   }
 }

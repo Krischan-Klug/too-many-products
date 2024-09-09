@@ -8,33 +8,35 @@ export default NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        username: { label: "Username", type: "text" },
+        password: { label: "Passwort", type: "password" },
       },
       async authorize(credentials) {
         const client = await MongoClient.connect(process.env.MONGODB_URI);
         const db = client.db();
+
         const user = await db
           .collection("users")
-          .findOne({ email: credentials.email });
+          .findOne({ username: credentials.username });
 
         if (!user) {
           client.close();
-          throw new Error("No user found with this email");
+          throw new Error("Kein Benutzer mit diesem Benutzernamen gefunden");
         }
 
         const isValid = await bcrypt.compare(
           credentials.password,
           user.password
         );
+
         if (!isValid) {
           client.close();
-          throw new Error("Invalid password");
+          throw new Error("Ungültiges Passwort");
         }
 
         client.close();
 
-        return { id: user._id, email: user.email };
+        return { id: user._id, username: user.username };
       },
     }),
   ],
@@ -50,11 +52,13 @@ export default NextAuth({
   callbacks: {
     async session({ session, token }) {
       session.user.id = token.sub;
+      session.user.username = token.username;
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
+        token.username = user.username;
       }
       return token;
     },

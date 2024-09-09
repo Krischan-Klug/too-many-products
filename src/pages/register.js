@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import bcrypt from "bcryptjs";
 
 export default function Register() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -12,7 +11,6 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Zurücksetzen der Nachrichten
     setError("");
     setSuccess("");
 
@@ -22,7 +20,7 @@ export default function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
@@ -31,7 +29,10 @@ export default function Register() {
         throw new Error(data.message || "Something went wrong");
       }
 
-      setSuccess("Registration successful! Redirecting...");
+      setSuccess("Registrierung erfolgreich! Weiterleitung...");
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
     } catch (error) {
       setError(error.message);
     }
@@ -39,20 +40,20 @@ export default function Register() {
 
   return (
     <div>
-      <h1>Register</h1>
+      <h1>Registrieren</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="username">Benutzername:</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Passwort:</label>
           <input
             type="password"
             id="password"
@@ -61,7 +62,7 @@ export default function Register() {
             required
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit">Registrieren</button>
       </form>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
