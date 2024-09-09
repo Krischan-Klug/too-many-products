@@ -44,6 +44,8 @@ export default NextAuth({
   },
   session: {
     jwt: true,
+    secret: process.env.NEXTAUTH_SECRET,
+    encryption: true,
   },
   callbacks: {
     async session({ session, token }) {
