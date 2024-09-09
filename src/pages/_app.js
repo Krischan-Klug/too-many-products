@@ -23,8 +23,10 @@ export default function App({
       <SWRConfig value={{ fetcher }}>
         <SessionProvider session={session}>
           <AuthWrapper>
+            {/* Content start */}
             <Header />
             <Component {...pageProps} />
+            {/* Content stop */}
           </AuthWrapper>
         </SessionProvider>
       </SWRConfig>

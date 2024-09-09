@@ -16,3 +16,14 @@ export const StyledHeaderWrapper = styled.div`
   position: sticky;
   top: 0;
 `;
+
+export const StyledBodyWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 400px;
+  padding: 20px;
+  margin-bottom: 40px;
+  margin-top: 20px;
+`;

@@ -16,7 +16,7 @@ export default function Delete() {
   };
 
   async function deleteProduct() {
-    const response = await fetch("/api/products/", {
+    const response = await fetch("/api/products/products", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

@@ -15,7 +15,7 @@ export default function Create() {
   };
 
   async function createProduct() {
-    const response = await fetch("/api/products/", {
+    const response = await fetch("/api/products/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

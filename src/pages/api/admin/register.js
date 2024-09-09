@@ -3,13 +3,20 @@ import bcrypt from "bcryptjs";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { username, password } = req.body;
+    const { username, password, privileges } = req.body;
 
     if (!username || !password) {
       return res
         .status(400)
         .json({ message: "Benutzername und Passwort sind erforderlich" });
     }
+
+    const defaultPrivileges = {
+      admin: false,
+      product: false,
+      stock: false,
+      // weitere Rechte können hier hinzugefügt werden
+    };
 
     try {
       const client = await MongoClient.connect(process.env.MONGODB_URI);
@@ -24,9 +31,11 @@ export default async function handler(req, res) {
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
+      // Benutzer in die Datenbank einfügen
       await db.collection("users").insertOne({
         username,
         password: hashedPassword,
+        privileges: defaultPrivileges, // Standardrechte, wenn keine angegeben
       });
 
       client.close();
