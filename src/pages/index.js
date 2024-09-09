@@ -1,14 +1,17 @@
 import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
+import LogoutButton from "@/components/utils/LogoutButton";
+import { StyledBodyWrapper } from "@/components/StyledComponents/StyledWrappers";
 
 export default function Home() {
   const { data: session } = useSession();
-  console.log(session);
+
   return (
     <>
-      <h1>HOME</h1>
-      <p> Logged in User: {session.user.username}</p>
-      <button onClick={() => signOut()}>Logout</button>
+      <StyledBodyWrapper>
+        <h1>Welcome</h1>
+        <p> Logged in User: {session.user.username}</p>
+        <LogoutButton />
+      </StyledBodyWrapper>
     </>
   );
 }

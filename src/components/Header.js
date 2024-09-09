@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { StyledHeaderWrapper } from "@/components/StyledComponents/StyledWrappers";
+import { useSession } from "next-auth/react";
 
 const StyledHeader = styled.header`
   display: flex;
@@ -34,6 +35,10 @@ const StyledMenu = styled.div`
 export default function Header() {
   const [activeMenu, setActiveMenu] = useState(null);
 
+  const { data: session } = useSession();
+
+  console.log(session);
+
   function toggleMenu(menu) {
     setActiveMenu(activeMenu === menu ? null : menu);
   }
@@ -50,9 +55,11 @@ export default function Header() {
             <button onClick={() => toggleMenu("stock")}>
               <h3>Stock</h3>
             </button>
-            <button onClick={() => toggleMenu("admin")}>
-              <h3>Admin</h3>
-            </button>
+            {session.user.privileges.admin === true && (
+              <button onClick={() => toggleMenu("admin")}>
+                <h3>Admin</h3>
+              </button>
+            )}
           </div>
         </StyledHeader>
 
@@ -75,8 +82,8 @@ export default function Header() {
         {activeMenu === "admin" && (
           <StyledMenu>
             <h3>Admin</h3>
-            <Link href="/">ADMIN</Link>
-            <Link href="/">USERS</Link>
+            <Link href="/admin">Admin</Link>
+            <Link href="/admin/register">Create User</Link>
             <Link href="/">WIP</Link>
           </StyledMenu>
         )}

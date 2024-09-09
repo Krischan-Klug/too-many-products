@@ -36,7 +36,11 @@ export default NextAuth({
 
         client.close();
 
-        return { id: user._id, username: user.username };
+        return {
+          id: user._id,
+          username: user.username,
+          privileges: user.privileges,
+        };
       },
     }),
   ],
@@ -53,12 +57,14 @@ export default NextAuth({
     async session({ session, token }) {
       session.user.id = token.sub;
       session.user.username = token.username;
+      session.user.privileges = token.privileges; // Privilegien zur Session hinzufügen
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
         token.username = user.username;
+        token.privileges = user.privileges; // Privilegien zum JWT hinzufügen
       }
       return token;
     },

@@ -1,7 +1,18 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function Register() {
+  const { data: session } = useSession();
+
+  if (session.user.privileges.admin === false) {
+    return (
+      <div>
+        <h1>NO ADMIN</h1>
+      </div>
+    );
+  }
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,7 +26,7 @@ export default function Register() {
     setSuccess("");
 
     try {
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/admin/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
